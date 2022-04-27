@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:horizontal_calendar_widget/date_helper.dart';
 import 'package:horizontal_calendar_widget/horizontal_calendar.dart';
@@ -7,9 +5,11 @@ import 'package:intl/intl.dart';
 
 import 'components/components.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        appBar: AppBar(title: Text('Horizontal Calendar Demo')),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
+        appBar: AppBar(title: const Text('Horizontal Calendar Demo')),
+        body: const Padding(
+          padding: EdgeInsets.symmetric(
             horizontal: 16,
           ),
           child: DemoWidget(),
@@ -37,7 +37,7 @@ const labelWeekDay = 'Week Day';
 
 class DemoWidget extends StatefulWidget {
   const DemoWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -45,8 +45,11 @@ class DemoWidget extends StatefulWidget {
 }
 
 class _DemoWidgetState extends State<DemoWidget> {
-  DateTime firstDate;
-  DateTime lastDate;
+  static const int days = 30;
+
+  late DateTime firstDate = toDateMonthYear(DateTime.now());
+  late DateTime lastDate =
+      toDateMonthYear(firstDate.add(const Duration(days: days - 1)));
   String dateFormat = 'dd';
   String monthFormat = 'MMM';
   String weekDayFormat = 'EEE';
@@ -67,25 +70,21 @@ class _DemoWidgetState extends State<DemoWidget> {
 
   int minSelectedDateCount = 1;
   int maxSelectedDateCount = 1;
-  RangeValues selectedDateCount;
+  late RangeValues selectedDateCount = RangeValues(
+    minSelectedDateCount.toDouble(),
+    maxSelectedDateCount.toDouble(),
+  );
 
-  List<DateTime> initialSelectedDates;
+  late List<DateTime> initialSelectedDates =
+      feedInitialSelectedDates(minSelectedDateCount, days);
 
   @override
   void initState() {
     super.initState();
-    const int days = 30;
-    firstDate = toDateMonthYear(DateTime.now());
-    lastDate = toDateMonthYear(firstDate.add(Duration(days: days - 1)));
-    selectedDateCount = RangeValues(
-      minSelectedDateCount.toDouble(),
-      maxSelectedDateCount.toDouble(),
-    );
-    initialSelectedDates = feedInitialSelectedDates(minSelectedDateCount, days);
   }
 
   List<DateTime> feedInitialSelectedDates(int target, int calendarDays) {
-    List<DateTime> selectedDates = List();
+    List<DateTime> selectedDates = [];
 
     for (int i = 0; i < calendarDays; i++) {
       if (selectedDates.length == target) {
@@ -105,11 +104,11 @@ class _DemoWidgetState extends State<DemoWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         HorizontalCalendar(
-          key: forceRender ? UniqueKey() : Key('Calendar'),
+          key: forceRender ? UniqueKey() : const Key('Calendar'),
           height: 120,
-          padding: EdgeInsets.all(22),
+          padding: const EdgeInsets.all(22),
           firstDate: firstDate,
           lastDate: lastDate,
           dateFormat: dateFormat,
@@ -145,11 +144,11 @@ class _DemoWidgetState extends State<DemoWidget> {
           maxSelectedDateCount: maxSelectedDateCount,
           initialSelectedDates: initialSelectedDates,
         ),
-        SizedBox(height: 32),
+        const SizedBox(height: 32),
         Expanded(
           child: ListView(
             children: <Widget>[
-              Header(headerText: 'Date Ranges'),
+              const Header(headerText: 'Date Ranges'),
               Row(
                 children: <Widget>[
                   Expanded(
@@ -216,7 +215,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                   ),
                 ],
               ),
-              Header(headerText: 'Date Selection'),
+              const Header(headerText: 'Date Selection'),
               PropertyLabel(
                 label:
                     'Min-Max Selectable Dates ($minSelectedDateCount - $maxSelectedDateCount)',
@@ -229,8 +228,8 @@ class _DemoWidgetState extends State<DemoWidget> {
                   },
                 ),
               ),
-              RaisedButton(
-                child: Text('Update'),
+              TextButton(
+                child: const Text('Update'),
                 onPressed: () {
                   setState(() {
                     int min = selectedDateCount.start.toInt();
@@ -251,13 +250,13 @@ class _DemoWidgetState extends State<DemoWidget> {
                   });
                 },
               ),
-              Header(headerText: 'Formats'),
+              const Header(headerText: 'Formats'),
               PropertyLabel(
                 label: 'Date Format',
-                value: DropDownProperty(
+                value: DropDownProperty<String>(
                   hint: 'Select Date Format',
                   value: dateFormat,
-                  options: ['dd', 'dd/MM'],
+                  options: const ['dd', 'dd/MM'],
                   onChange: (format) {
                     setState(() {
                       forceRender = false;
@@ -268,10 +267,10 @@ class _DemoWidgetState extends State<DemoWidget> {
               ),
               PropertyLabel(
                 label: 'Month Format',
-                value: DropDownProperty(
+                value: DropDownProperty<String>(
                   hint: 'Select Month Format',
                   value: monthFormat,
-                  options: [
+                  options: const [
                     'MM',
                     'MMM',
                   ],
@@ -285,10 +284,10 @@ class _DemoWidgetState extends State<DemoWidget> {
               ),
               PropertyLabel(
                 label: 'WeekDay Format',
-                value: DropDownProperty(
+                value: DropDownProperty<String>(
                   hint: 'Select Weekday Format',
                   value: weekDayFormat,
-                  options: ['EEE', 'EEEE'],
+                  options: const ['EEE', 'EEEE'],
                   onChange: (format) {
                     setState(() {
                       forceRender = false;
@@ -297,7 +296,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                   },
                 ),
               ),
-              Header(headerText: 'Labels'),
+              const Header(headerText: 'Labels'),
               PropertyLabel(
                 label: 'Label Orders (Drag & Drop to reorder)',
                 value: Align(
@@ -322,7 +321,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                                           })
                                         : null,
                                     deleteIcon: listItem != labelDate
-                                        ? Icon(Icons.cancel)
+                                        ? const Icon(Icons.cancel)
                                         : null,
                                     label: Text(listItem),
                                   ),
@@ -341,8 +340,8 @@ class _DemoWidgetState extends State<DemoWidget> {
                           },
                         ),
                       ),
-                      RaisedButton(
-                        child: Text('Add Labels'),
+                      TextButton(
+                        child: const Text('Add Labels'),
                         onPressed: () {
                           setState(() {
                             forceRender = false;
@@ -359,7 +358,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                   ),
                 ),
               ),
-              Header(headerText: 'Default Decoration'),
+              const Header(headerText: 'Default Decoration'),
               DecorationBuilder(
                 decorationShape: defaultDecorationShape,
                 onSelectShape: (value) {
@@ -372,7 +371,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                 onCircularRadiusChange: (isSelected) {
                   setState(
                     () {
-                      isCircularRadiusDefault = isSelected;
+                      isCircularRadiusDefault = isSelected ?? false;
                     },
                   );
                 },
@@ -384,7 +383,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                   });
                 },
               ),
-              Header(headerText: 'Selected Decoration'),
+              const Header(headerText: 'Selected Decoration'),
               DecorationBuilder(
                 decorationShape: selectedDecorationShape,
                 onSelectShape: (value) {
@@ -398,7 +397,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                   setState(
                     () {
                       forceRender = false;
-                      isCircularRadiusSelected = isSelected;
+                      isCircularRadiusSelected = isSelected ?? false;
                     },
                   );
                 },
@@ -410,7 +409,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                   });
                 },
               ),
-              Header(headerText: 'Disabled Decoration'),
+              const Header(headerText: 'Disabled Decoration'),
               DecorationBuilder(
                 decorationShape: disabledDecorationShape,
                 onSelectShape: (value) {
@@ -424,7 +423,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                   setState(
                     () {
                       forceRender = false;
-                      isCircularRadiusDisabled = isSelected;
+                      isCircularRadiusDisabled = isSelected ?? false;
                     },
                   );
                 },
@@ -444,7 +443,7 @@ class _DemoWidgetState extends State<DemoWidget> {
   }
 
   void showMessage(String message) {
-    Scaffold.of(context).showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
     );
   }
@@ -475,7 +474,7 @@ class _DemoWidgetState extends State<DemoWidget> {
   }
 }
 
-Future<DateTime> datePicker(
+Future<DateTime?> datePicker(
   BuildContext context,
   DateTime initialDate,
 ) async {
@@ -483,17 +482,20 @@ Future<DateTime> datePicker(
     context: context,
     initialDate: initialDate,
     firstDate: DateTime.now().subtract(
-      Duration(days: 365),
+      const Duration(days: 365),
     ),
     lastDate: DateTime.now().add(
-      Duration(days: 365),
+      const Duration(days: 365),
     ),
   );
+  if (selectedDate == null) {
+    return null;
+  }
   return toDateMonthYear(selectedDate);
 }
 
 LabelType toLabelType(String label) {
-  LabelType type;
+  LabelType type = LabelType.date;
   switch (label) {
     case labelMonth:
       type = LabelType.month;

@@ -8,20 +8,20 @@ class DateWidget extends StatelessWidget {
   final defaultWeekDayFormat = 'EEE';
 
   final DateTime date;
-  final TextStyle monthTextStyle;
-  final TextStyle selectedMonthTextStyle;
-  final String monthFormat;
-  final TextStyle dateTextStyle;
-  final TextStyle selectedDateTextStyle;
-  final String dateFormat;
-  final TextStyle weekDayTextStyle;
-  final TextStyle selectedWeekDayTextStyle;
-  final String weekDayFormat;
-  final VoidCallback onTap;
-  final VoidCallback onLongTap;
-  final Decoration defaultDecoration;
-  final Decoration selectedDecoration;
-  final Decoration disabledDecoration;
+  final TextStyle? monthTextStyle;
+  final TextStyle? selectedMonthTextStyle;
+  final String? monthFormat;
+  final TextStyle? dateTextStyle;
+  final TextStyle? selectedDateTextStyle;
+  final String? dateFormat;
+  final TextStyle? weekDayTextStyle;
+  final TextStyle? selectedWeekDayTextStyle;
+  final String? weekDayFormat;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongTap;
+  final Decoration? defaultDecoration;
+  final Decoration? selectedDecoration;
+  final Decoration? disabledDecoration;
   final bool isSelected;
   final bool isDisabled;
   final EdgeInsetsGeometry padding;
@@ -29,8 +29,8 @@ class DateWidget extends StatelessWidget {
   final bool isLabelUppercase;
 
   const DateWidget({
-    Key key,
-    @required this.date,
+    Key? key,
+    required this.date,
     this.onTap,
     this.onLongTap,
     this.isSelected = false,
@@ -47,8 +47,12 @@ class DateWidget extends StatelessWidget {
     this.defaultDecoration,
     this.selectedDecoration = const BoxDecoration(color: Colors.cyan),
     this.disabledDecoration = const BoxDecoration(color: Colors.grey),
-    this.padding,
-    this.labelOrder,
+    this.padding = EdgeInsets.zero,
+    this.labelOrder = const [
+      LabelType.month,
+      LabelType.date,
+      LabelType.weekday,
+    ],
     this.isLabelUppercase = false,
   }) : super(key: key);
 
@@ -73,7 +77,9 @@ class DateWidget extends StatelessWidget {
       child: Container(
         decoration: isSelected
             ? selectedDecoration
-            : isDisabled ? disabledDecoration : defaultDecoration,
+            : isDisabled
+                ? disabledDecoration
+                : defaultDecoration,
         child: Padding(
           padding: padding,
           child: Column(

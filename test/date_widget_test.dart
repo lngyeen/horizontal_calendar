@@ -17,7 +17,7 @@ void main() {
       Directionality(
         child: DateWidget(
           date: DateTime(2019, 11, 17),
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           labelOrder: defaultLabelOrder,
         ),
         textDirection: TextDirection.ltr,
@@ -39,7 +39,7 @@ void main() {
         Directionality(
           child: DateWidget(
             date: DateTime(2019, 11, 17),
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             dateFormat: 'dd/MMM',
             monthFormat: 'MM',
             weekDayFormat: 'EEEE',
@@ -61,7 +61,7 @@ void main() {
   testWidgets(
     'Default decoration should be applied to Date / month / weekday if not selected',
     (WidgetTester tester) async {
-      final dateDecoration = BoxDecoration(
+      const dateDecoration = BoxDecoration(
         color: Colors.blue,
       );
 
@@ -69,7 +69,7 @@ void main() {
         Directionality(
           child: DateWidget(
             date: DateTime(2019, 11, 17),
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             dateFormat: null,
             monthFormat: null,
             weekDayFormat: null,
@@ -80,16 +80,17 @@ void main() {
         ),
       );
 
-      WidgetPredicate datePredicate = (Widget widget) =>
-          widget is Container && widget.decoration == dateDecoration;
-      expect(find.byWidgetPredicate(datePredicate), findsOneWidget);
+      expect(
+          find.byWidgetPredicate((Widget widget) =>
+              widget is Container && widget.decoration == dateDecoration),
+          findsOneWidget);
     },
   );
 
   testWidgets(
     'Selected decoration should be applied to Date / month / weekday is selected',
     (WidgetTester tester) async {
-      final dateDecoration = BoxDecoration(
+      const dateDecoration = BoxDecoration(
         color: Colors.blue,
       );
 
@@ -97,7 +98,7 @@ void main() {
         Directionality(
           child: DateWidget(
             date: DateTime(2019, 11, 17),
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             dateFormat: null,
             monthFormat: null,
             weekDayFormat: null,
@@ -109,26 +110,27 @@ void main() {
         ),
       );
 
-      WidgetPredicate datePredicate = (Widget widget) =>
-          widget is Container && widget.decoration == dateDecoration;
-      expect(find.byWidgetPredicate(datePredicate), findsOneWidget);
+      expect(
+          find.byWidgetPredicate((Widget widget) =>
+              widget is Container && widget.decoration == dateDecoration),
+          findsOneWidget);
     },
   );
 
   testWidgets(
     'Disabled decoration should be applied to Date / month / weekday if is disabled',
     (WidgetTester tester) async {
-      final dateDecoration = BoxDecoration(
+      const dateDecoration = BoxDecoration(
         color: Colors.blue,
       );
 
-      final style = TextStyle(color: Colors.white);
+      const style = TextStyle(color: Colors.white);
 
       await tester.pumpWidget(
         Directionality(
           child: DateWidget(
             date: DateTime(2019, 11, 17),
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             dateFormat: null,
             monthFormat: null,
             weekDayFormat: null,
@@ -141,33 +143,35 @@ void main() {
         ),
       );
 
-      WidgetPredicate datePredicate = (Widget widget) =>
-          widget is Container && widget.decoration == dateDecoration;
-      expect(find.byWidgetPredicate(datePredicate), findsOneWidget);
+      expect(
+          find.byWidgetPredicate((Widget widget) =>
+              widget is Container && widget.decoration == dateDecoration),
+          findsOneWidget);
 
-      WidgetPredicate dateTextStyle =
-          (Widget widget) => widget is Text && widget.style == style;
-      expect(find.byWidgetPredicate(dateTextStyle), findsOneWidget);
+      expect(
+          find.byWidgetPredicate(
+              (Widget widget) => widget is Text && widget.style == style),
+          findsOneWidget);
     },
   );
 
   testWidgets(
     'Default Date with all properties',
     (WidgetTester tester) async {
-      final defaultDecoration = BoxDecoration(
+      const defaultDecoration = BoxDecoration(
         color: Colors.blue,
       );
 
-      final padding = EdgeInsets.symmetric(horizontal: 8);
+      const padding = EdgeInsets.symmetric(horizontal: 8);
 
-      final monthStyle = TextStyle(color: Colors.white);
-      final monthFormat = 'MM';
+      const monthStyle = TextStyle(color: Colors.white);
+      const monthFormat = 'MM';
 
-      final dateStyle = TextStyle(color: Colors.black);
-      final dateFormat = 'dd/MM';
+      const dateStyle = TextStyle(color: Colors.black);
+      const dateFormat = 'dd/MM';
 
-      final weekDayStyle = TextStyle(color: Colors.green);
-      final weekDayFormat = 'EEE';
+      const weekDayStyle = TextStyle(color: Colors.green);
+      const weekDayFormat = 'EEE';
 
       await tester.pumpWidget(
         Directionality(
@@ -187,23 +191,31 @@ void main() {
         ),
       );
 
-      WidgetPredicate datePredicate = (Widget widget) =>
-          widget is Container && widget.decoration == defaultDecoration;
-      expect(find.byWidgetPredicate(datePredicate), findsOneWidget);
+      expect(
+          find.byWidgetPredicate((Widget widget) =>
+              widget is Container && widget.decoration == defaultDecoration),
+          findsOneWidget);
 
-      WidgetPredicate dateTextStyle = (Widget widget) =>
-          widget is Text && widget.style == dateStyle && widget.data == '17/11';
-      expect(find.byWidgetPredicate(dateTextStyle), findsOneWidget);
+      expect(
+          find.byWidgetPredicate((Widget widget) =>
+              widget is Text &&
+              widget.style == dateStyle &&
+              widget.data == '17/11'),
+          findsOneWidget);
 
-      WidgetPredicate monthTextStyle = (Widget widget) =>
-          widget is Text && widget.style == monthStyle && widget.data == '11';
-      expect(find.byWidgetPredicate(monthTextStyle), findsOneWidget);
+      expect(
+          find.byWidgetPredicate((Widget widget) =>
+              widget is Text &&
+              widget.style == monthStyle &&
+              widget.data == '11'),
+          findsOneWidget);
 
-      WidgetPredicate weekDayTextStyle = (Widget widget) =>
-          widget is Text &&
-          widget.style == weekDayStyle &&
-          widget.data == 'Sun';
-      expect(find.byWidgetPredicate(weekDayTextStyle), findsOneWidget);
+      expect(
+          find.byWidgetPredicate((Widget widget) =>
+              widget is Text &&
+              widget.style == weekDayStyle &&
+              widget.data == 'Sun'),
+          findsOneWidget);
     },
   );
 
@@ -214,8 +226,8 @@ void main() {
         Directionality(
           child: DateWidget(
             date: DateTime(2019, 11, 17),
-            padding: EdgeInsets.all(8),
-            labelOrder: [
+            padding: const EdgeInsets.all(8),
+            labelOrder: const [
               LabelType.date,
               LabelType.month,
             ],
@@ -225,22 +237,20 @@ void main() {
         ),
       );
 
-      WidgetPredicate columnPredicate = (Widget widget) {
+      expect(find.byWidgetPredicate((Widget widget) {
         if (widget is Column) {
           final children = widget.children;
           if (children.length < 2) {
             return false;
           }
-          Text firstText = children[0];
-          Text secondText = children[1];
+          Text firstText = children[0] as Text;
+          Text secondText = children[1] as Text;
           if (firstText.data == "17" && secondText.data == "Nov") {
             return true;
           }
         }
         return false;
-      };
-
-      expect(find.byWidgetPredicate(columnPredicate), findsOneWidget);
+      }), findsOneWidget);
     },
   );
 }
